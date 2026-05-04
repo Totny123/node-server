@@ -11,6 +11,12 @@ server.on('request', (request, response) => {
   const { pathname } = new URL(request.url || '', 'http://localhost');
   const fileName = pathname.slice(1) || 'index.html';
 
+  if (method?.toUpperCase() !== 'GET') {
+    response.statusCode = 405;
+    response.end();
+    return;
+  }
+
   fs.readFile(path.resolve(publicDir, fileName), (error, data) => {
     if (error) {
       console.log('feng error', error);
