@@ -5,6 +5,7 @@ import { URL } from 'url';
 
 const publicDir = path.resolve(__dirname, './public');
 const server = http.createServer();
+const cacheAge = 60 * 60 * 24 * 365;
 
 server.on('request', (request, response) => {
   const { method, headers } = request;
@@ -34,6 +35,7 @@ server.on('request', (request, response) => {
         response.end('服务器繁忙');
       }
     } else {
+      response.setHeader('cache-control', `public,max-age=${cacheAge}`);
       response.end(data);
     }
   });
